@@ -33,23 +33,25 @@ def main():
 
         # added code for logical errors, no error handling
         if option == '1':
-            print("-- Calculate batting average --")
+            while True:
+                print("-- Calculate batting average --")
 
-            at_bats = int(input("Official number of at bats: "))
-            if at_bats < 0:
-                print("Number of at bats must be greater than 0.")
-                continue
+                at_bats = int(input("Official number of at bats: "))
+                if at_bats < 0:
+                    print("Number of at bats must be greater than 0.")
+                    continue
 
-            num_hits = int(input("Number of hits: "))
-            if num_hits < 0:
-                print("Number of hits must be greater than 0.")
-                continue
-            elif num_hits > at_bats:
-                print("Number of hits must be less that number of at bats")
-                continue
-            
-            batting_average = calc_bat_avg(at_bats, num_hits)
-            print(f"Batting average: {batting_average}")
+                num_hits = int(input("Number of hits: "))
+                if num_hits < 0:
+                    print("Number of hits must be greater than 0.")
+                    continue
+                elif num_hits > at_bats:
+                    print("Number of hits must be less that number of at bats")
+                    continue
+                
+                batting_average = calc_bat_avg(at_bats, num_hits)
+                print(f"Batting average: {batting_average}")
+                break
 
         elif option == '2':
             print("Bye!")
