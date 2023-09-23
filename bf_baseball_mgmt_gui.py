@@ -14,8 +14,8 @@ def menu_options():
    print("1 – Calculate batting average")
    print("2 - Exit program")
 
-def calc_bat_avg(num_bats_input, num_hits_input):
-    batting_avg = num_hits_input / num_bats_input
+def calc_bat_avg(at_bats, num_hits):
+    batting_avg = at_bats / num_hits
     batting_avg = round(batting_avg, 3)
     return batting_avg
 
@@ -31,12 +31,24 @@ def main():
         print()
         option = input("Menu option: ")
 
+        # added code for logical errors, no error handling
         if option == '1':
             print("-- Calculate batting average --")
-            num_bats_input = int(input("Official number of at bats: "))
-            num_hits_input = int(input("Number of hits: "))
+
+            at_bats = int(input("Official number of at bats: "))
+            if at_bats < 0:
+                print("Number of at bats must be greater than 0.")
+                continue
+
+            num_hits = int(input("Number of hits: "))
+            if num_hits < 0:
+                print("Number of hits must be greater than 0.")
+                continue
+            elif num_hits > at_bats:
+                print("Number of hits must be less that number of at bats")
+                continue
             
-            batting_average = calc_bat_avg(num_bats_input, num_hits_input)
+            batting_average = calc_bat_avg(at_bats, num_hits)
             print(f"Batting average: {batting_average}")
 
         elif option == '2':
