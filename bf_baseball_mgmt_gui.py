@@ -25,8 +25,24 @@ def display_menu():
 def display_lineup(lineup):
     print(f"\tPLAYER\t\tPOS\tAB\tH\tAVG")
     print("----------------------------------------------------------------")
-    print("\t >>>>this is a placeholder func<<<<")
-    print(lineup)
+
+    if len(lineup) == 0:
+        print("There are no players on the lineup")
+    else:
+        print()
+        lineup_count = 0
+        for player in lineup:
+            lineup_count += 1
+            for index, item in enumerate(player):
+                if index == 0:
+                    if len(player[0]) <= 7:
+                        print(f"{lineup_count}\t{item}", end='\t\t')
+                    else:
+                        print(f"{lineup_count}\t{item}", end='\t')
+                else:
+                    print(item, end='\t')
+            print()
+
 
 
 #####    option 2   #####
@@ -104,12 +120,12 @@ def main():
     lineup = []
     possible_positions = ("C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "P")
     #fake lineup for testing of course
-    """test_lineup = [["jonh", "P", 10, 2, 0.2],
+    test_lineup = [["jonh", "P", 10, 2, 0.2],
                   ["billy", "SS", 11, 4, 0.364],
                   ["suzie", "3B", 9, 3, 0.333],
                   ["roger", "C", 4, 1, 0.25],
                   ["christopher", "3B", 10, 5, 0.5],
-                  ["randy", "1B", 9, 3, 0.333]]"""
+                  ["randy", "1B", 9, 3, 0.333]]
 
     display_menu()
     while True:
