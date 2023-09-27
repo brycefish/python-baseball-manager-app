@@ -2,7 +2,7 @@
 # Bryce Fish
 # Project 1
 # Server-Side Programming
-# TO-DO: options-   #1   #4    #5  #6  
+# TO-DO: options-          #5     #6  
 
 #####   display menu    #####
 def display_menu():
@@ -99,12 +99,29 @@ def remove_player(current_lineup):
         if index < 1 or index > len(current_lineup):
             print("\nInvalid lineup number. Try again.")
         else:
-            ################## change vars #####################################
             player_selected = current_lineup.pop(index - 1)
             print(f"\n{player_selected[0]} was removed\n")
             break
 
     return current_lineup
+
+
+#####    Option 4: Move Player  #####
+def move_player(lineup):
+    current_num = int(input("Enter players current lineup number: "))
+    if current_num < 1 or current_num > len(lineup):
+        print(f"Invalid lineup number, please enter a number between 1 and {len(lineup)}")
+    else:
+        player = lineup.pop(current_num - 1)
+        print(f"{player[0]} was selected.")
+    
+    new_num = int(input("New lineup number: "))
+    if new_num < 1 or new_num > len(lineup):
+        print(f"Invalid lineup number, please enter a number between 1 and {len(lineup)}")
+    else:
+        lineup.insert(new_num - 1, player)
+        print(f"{player[0]} was moved/")
+
 
 
 #####   Calculate Batting Average   ####
@@ -132,17 +149,17 @@ def main():
         print()
         option = input("Menu option: ")
         if option == '1':
-            display_lineup(lineup)
+            display_lineup(test_lineup)
 
         elif option == '2':
             player = enter_new_player()
             lineup.append(player)
 
         elif option == '3':
-            remove_player(lineup)
+            remove_player(test_lineup)
 
         elif option == '4':
-            print("option 4")
+            move_player(test_lineup)
 
         elif option == '5':
             print("option 5")
