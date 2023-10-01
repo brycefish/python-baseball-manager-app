@@ -36,7 +36,7 @@ def write_lineup_csv(lineup):
 
 def calc_bat_avg(at_bats, num_hits):
     batting_avg =  num_hits / at_bats
-    batting_avg = round(batting_avg, 3)    
+    batting_avg = round(batting_avg, 3)
     return batting_avg
 
 
@@ -64,7 +64,7 @@ def display_lineup(lineup):
             print()
 
 
-####    option 2: enter new player    #### 
+####    option 2: enter new player    ####
 def enter_new_player(valid_positions):
     player = []
     name = input("Name: ")
