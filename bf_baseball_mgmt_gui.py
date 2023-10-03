@@ -3,7 +3,10 @@
 # Project 1
 # Server-Side Programming
 import csv
-LINEUPFILE = "lineup.csv"
+from read_write_csv import read_lineup_csv,  write_lineup_csv
+from testing_file import test_lineup
+read = read_lineup_csv
+write = write_lineup_csv
 
 def display_menu():
     print()
@@ -21,19 +24,6 @@ def display_menu():
     print("C, 1B, 2B, 3B, SS, LF, CF, RF, P")
     print("================================================================")
 
-def read_lineup_csv():
-    newlineup = []
-    with open(LINEUPFILE, newline="") as file:
-        reader = csv.reader(file)
-        for row in reader:
-            newlineup.append(row)
-    return newlineup
-
-def write_lineup_csv(lineup):
-    with open(LINEUPFILE, "w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerows(lineup)
-
 def calc_bat_avg(at_bats, num_hits):
     batting_avg =  num_hits / at_bats
     batting_avg = round(batting_avg, 3)
@@ -43,7 +33,7 @@ def calc_bat_avg(at_bats, num_hits):
 ####    option 1: display lineup   ####
 def display_lineup(lineup):
     
-    lineup = read_lineup_csv()
+    lineup = read()
     if len(lineup) == 0:
         print("There are no players to display")
     else:
@@ -65,7 +55,7 @@ def display_lineup(lineup):
 
 
 ####    option 2: enter new player    ####
-def enter_new_player(valid_positions):
+def enter_new_player(lineup, valid_positions):
     player = []
     name = input("Name: ")
     player.append(name)
@@ -99,13 +89,14 @@ def enter_new_player(valid_positions):
     player.append(num_hits)
     player.append(bat_avg)
     print(f"{name} was added")
-    return player
+    lineup.append(player)
+    write(lineup)
 
 
 ####   option 3: remove player   ####
 def remove_player(current_lineup):
     if len(current_lineup) == 0:
-        print("There are no players to display")
+        print("There are no players")
         return
 
     while len(current_lineup) > 0:
@@ -116,22 +107,22 @@ def remove_player(current_lineup):
             player_selected = current_lineup.pop(index - 1)
             print(f"{player_selected[0]} was removed.")
             break
-    write_lineup_csv(current_lineup)
+    write(current_lineup)
     
 
 ####    Option 4: move player   ####
 def move_player(lineup):
     if len(lineup) == 0:
-        print("There are no players to display")
+        print("There are no players")
         return
     
     # get player
-    current_num = int(input("Enter players current lineup number: "))
+    current_num = int(input("Current lineup number of player to move: "))
     if current_num < 1 or current_num > len(lineup):
         print(f"Invalid lineup number, please enter a number between 1 and {len(lineup)}")
     else:
         player = lineup.pop(current_num - 1)
-        print(f"{player[0]} was selected.")
+        print(f"{player[0]} was selected.\n")
     
     # move player
     new_num = int(input("New lineup number: "))
@@ -139,14 +130,14 @@ def move_player(lineup):
         print(f"Invalid lineup number, please enter a number between 1 and {len(lineup)}")
     else:
         lineup.insert(new_num - 1, player)
-        write_lineup_csv(lineup)
-        print(f"{player[0]} was moved.")
+        write(lineup)
+        print(f"{player[0]} was moved.\n")
     
 
 ####   option 5: edit player position   ####
 def edit_position(lineup, positions):
     if len(lineup) == 0:
-        print("There are no players to display")
+        print("There are no players")
         return
 
     # get player
@@ -167,7 +158,7 @@ def edit_position(lineup, positions):
             player.insert(1, position)
             print(f"{player[0]}'s position was changed.")
             #write to csv
-            write_lineup_csv(lineup)
+            write(lineup)
             break
         else:
             print("\nInvalid position. Please try again")
@@ -178,7 +169,7 @@ def edit_position(lineup, positions):
 ####   option 6: edit player stats ####
 def edit_player_stats(lineup):
     if len(lineup) == 0:
-        print("There are no players to display")
+        print("There are no players")
         return
     
     #get player
@@ -186,7 +177,7 @@ def edit_player_stats(lineup):
     while True:
         player_index = int(input("Enter player lineup number: "))
         if len(lineup) == 0:
-            print("There are no players to display")
+            print("There are no players")
         elif player_index < 1 or player_index > len(lineup):
             print(f"Invalid lineup number, please enter a number between 1 and {len(lineup)}")
         else:
@@ -216,14 +207,14 @@ def edit_player_stats(lineup):
     bat_avg = calc_bat_avg(at_bats, num_hits)
     player.append(bat_avg)
     lineup.insert(player_index - 1, player)
-    write_lineup_csv(lineup)
+    write(lineup)
     print(f"{player[0]} was added.")
 
 
 ####    Main    ####
 def main():
     valid_positions = ("C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "P")
-    lineup = read_lineup_csv()
+    lineup = read()
 
     display_menu()
     while True:
@@ -234,9 +225,7 @@ def main():
             display_lineup(lineup)
 
         elif option == '2':
-            player = enter_new_player(valid_positions)
-            lineup.append(player)
-            write_lineup_csv(lineup)
+            enter_new_player(lineup, valid_positions)
 
         elif option == '3':
             remove_player(lineup)
@@ -252,6 +241,12 @@ def main():
 
         elif option == '7':
             break
+
+        elif option == 'test':
+            write(test_lineup)
+            lineup = read()
+            display_lineup(lineup)
+            print("\nTest lineup was added")
 
         else:
             print("Not a valid option. Please try again")
