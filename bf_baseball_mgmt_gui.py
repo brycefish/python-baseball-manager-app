@@ -2,15 +2,13 @@
 # Bryce Fish
 # Project 1
 # Server-Side Programming
-import csv
+import csv, os
 from read_write_csv import read_lineup_csv,  write_lineup_csv
 from testing_file import test_lineup
 read = read_lineup_csv
 write = write_lineup_csv
 
 def display_menu():
-    print()
-    print("================================================================")
     print("MENU OPTIONS")
     print("1 - Display lineup" +
           "\n2 - Add player" +
@@ -19,10 +17,7 @@ def display_menu():
           "\n5 - Edit player position" +
           "\n6 - Edit player stats" +
           "\n7 - Exit program")
-    print()
-    print("POSTIONS")
-    print("C, 1B, 2B, 3B, SS, LF, CF, RF, P")
-    print("================================================================")
+
 
 def calc_bat_avg(at_bats, num_hits):
     batting_avg =  num_hits / at_bats
@@ -32,9 +27,9 @@ def calc_bat_avg(at_bats, num_hits):
 
 ####    option 1: display lineup   ####
 def display_lineup(lineup):
-    
     lineup = read()
-    if len(lineup) == 0:
+
+    if len(lineup) == 0 and os.path.exists("lineup.csv"):
         print("There are no players to display")
     else:
         print(f"\tPLAYER\t\tPOS\tAB\tH\tAVG")
@@ -214,42 +209,50 @@ def edit_player_stats(lineup):
 ####    Main    ####
 def main():
     valid_positions = ("C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "P")
-    lineup = read()
 
+    print()
+    print("================================================================")
+    print("\t\t\t Baseball Team Manager")
     display_menu()
+    print("POSTIONS")
+    print("C, 1B, 2B, 3B, SS, LF, CF, RF, P")
+    lineup = read()
+    print("================================================================")
+
     while True:
-        print()
-        option = input("Menu option: ")
+        try:
+            print()
+            option = int(input("Menu option: "))
+            if option == 1:
+                display_lineup(lineup)
 
-        if option == '1':
-            display_lineup(lineup)
+            elif option == 2:
+                enter_new_player(lineup, valid_positions)
 
-        elif option == '2':
-            enter_new_player(lineup, valid_positions)
+            elif option == 3:
+                remove_player(lineup)
 
-        elif option == '3':
-            remove_player(lineup)
+            elif option == 4:
+                move_player(lineup)
 
-        elif option == '4':
-            move_player(lineup)
+            elif option == 5:
+                edit_position(lineup, valid_positions)
 
-        elif option == '5':
-            edit_position(lineup, valid_positions)
+            elif option == 6:
+                edit_player_stats(lineup)
 
-        elif option == '6':
-            edit_player_stats(lineup)
+            elif option == 7:
+                break
 
-        elif option == '7':
-            break
+            elif option == 999:
+                write(test_lineup)
+                lineup = read()
+                display_lineup(lineup)
+                print("\nTest lineup was added")
 
-        elif option == 'test':
-            write(test_lineup)
-            lineup = read()
-            display_lineup(lineup)
-            print("\nTest lineup was added")
-
-        else:
-            print("Not a valid option. Please try again")
+        except ValueError:
+            print("Not a valid option. Please try again.\n")
+            display_menu()
 
     print("\nBye!")
 
