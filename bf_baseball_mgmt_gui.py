@@ -65,19 +65,23 @@ def enter_new_player(lineup, valid_positions):
             print("POSITIONS:")
             print(valid_positions)
     while True:
-        at_bats = int(input("At bats: "))
-        if at_bats < 0:
-            print("At bats must be a positive integer ")
-        else:
-            break
+        try:
+            at_bats = int(input("At bats: "))
+            if at_bats <= 0:
+                print("At bats must be greater than zero")
+            else:
+                break
+        except ValueError:
+            print("Not a valid option. Please try again.\n")
     while True:
-        num_hits = int(input("Hits: "))
-        if num_hits < 0:
-            print("Hits must be greater than zero")
-        elif num_hits > at_bats:
-            print("Hits must be lower than at bats")
-        else:
-            break
+        try:
+            num_hits = int(input("Hits: "))
+            if num_hits > at_bats:
+                print("Hits must be lower than at bats")
+            else:
+                break
+        except ValueError:
+            print("Not a valid option. Please try again.\n")
     
     bat_avg = calc_bat_avg(at_bats, num_hits)
     player.append(at_bats)
