@@ -64,11 +64,12 @@ def enter_new_player(lineup, valid_positions):
             print("Invalid Position. Please try again")
             print("POSITIONS:")
             print(valid_positions)
+            print()
     while True:
         try:
             at_bats = int(input("At bats: "))
             if at_bats <= 0:
-                print("At bats must be greater than zero")
+                print("At bats must be greater than zero.\n")
             else:
                 break
         except ValueError:
@@ -77,7 +78,9 @@ def enter_new_player(lineup, valid_positions):
         try:
             num_hits = int(input("Hits: "))
             if num_hits > at_bats:
-                print("Hits must be lower than at bats")
+                print("Hits must be lower than at bats.\n")
+            elif num_hits <= 0:
+                print("Hits must be greater than zero.\n")
             else:
                 break
         except ValueError:
@@ -114,23 +117,25 @@ def move_player(lineup):
     if len(lineup) == 0:
         print("There are no players")
         return
-    
-    # get player
-    current_num = int(input("Current lineup number of player to move: "))
-    if current_num < 1 or current_num > len(lineup):
-        print(f"Invalid lineup number, please enter a number between 1 and {len(lineup)}")
-    else:
-        player = lineup.pop(current_num - 1)
-        print(f"{player[0]} was selected.\n")
-    
-    # move player
-    new_num = int(input("New lineup number: "))
-    if new_num < 1 or new_num > len(lineup):
-        print(f"Invalid lineup number, please enter a number between 1 and {len(lineup)}")
-    else:
-        lineup.insert(new_num - 1, player)
-        write(lineup)
-        print(f"{player[0]} was moved.\n")
+    while True:
+        # get player
+        current_num = int(input("Current lineup number of player to move: "))
+        if current_num < 1 or current_num > len(lineup):
+            print(f"Invalid lineup number, please enter a number between 1 and {len(lineup)}\n")
+        else:
+            player = lineup.pop(current_num - 1)
+            print(f"{player[0]} was selected.\n")
+            break
+
+    while True:
+        new_num = int(input("New lineup number: "))
+        if new_num < 1 or new_num > len(lineup):
+            print(f"Invalid lineup number, please enter a number between 1 and {len(lineup)}\n")
+        else:
+            lineup.insert(new_num - 1, player)
+            write(lineup)
+            print(f"{player[0]} was moved.")
+            break
     
 
 ####   option 5: edit player position   ####
@@ -188,14 +193,14 @@ def edit_player_stats(lineup):
     # get stats
     while True:
         at_bats = int(input("At bats: "))
-        if at_bats < 0:
+        if at_bats <= 0:
             print("At bats must be a positive integer ")
         else:
             player.append(at_bats)
             break
     while True:
         num_hits = int(input("Hits: "))
-        if num_hits < 0:
+        if num_hits <= 0:
             print("Hits must be greater than zero")
         elif num_hits > at_bats:
             print("Hits must be lower than at bats")
@@ -207,7 +212,7 @@ def edit_player_stats(lineup):
     player.append(bat_avg)
     lineup.insert(player_index - 1, player)
     write(lineup)
-    print(f"{player[0]} was added.")
+    print(f"{player[0]}'s stats were changed.")
 
 
 ####    Main    ####
